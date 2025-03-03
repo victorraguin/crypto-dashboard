@@ -1,6 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCryptoList } from '../api/cryptocurrency/getCryptoList'
-import { CryptoCurrencyType } from '../types/cryptocurrencys'
+import {
+  CryptoCurrencyListResponse,
+  CryptoCurrencyType
+} from '../types/cryptocurrencys'
 
 export const useFetchCryptoList = (currency: string, page: number) => {
   const { data, isLoading, error } = useQuery({
@@ -11,14 +14,14 @@ export const useFetchCryptoList = (currency: string, page: number) => {
 
   if (!data) return { data: [], isLoading, error }
 
-  console.log(data)
-
   const transformedData = transformData(data)
 
   return { data: transformedData, isLoading, error }
 }
 
-const transformData = (data: any[]): CryptoCurrencyType[] => {
+const transformData = (
+  data: CryptoCurrencyListResponse[]
+): CryptoCurrencyType[] => {
   return data.map(crypto => ({
     id: crypto.id,
     name: crypto.name,
